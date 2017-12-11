@@ -78,7 +78,7 @@ Lets now use this account to build a machine image for Amazon EC2. Open up the f
     installation:
       diskSize: 10240
     region: eu-west-1
-    s3bucket: mybucketname
+    bucket: mybucketname
 
 If you are using JSON (file ``nginx-template.json``):
 
@@ -113,7 +113,7 @@ If you are using JSON (file ``nginx-template.json``):
           "diskSize": 10240
         },
         "region": "eu-west-1",
-        "s3bucket": "mybucketname"
+        "bucket": "mybucketname"
       }
     ]
   }
