@@ -15,7 +15,7 @@ For security reasons, it is recommended not to add any cloud account information
 
   ---
   accounts:
-  - type: Amazon
+  - type: Amazon AWS
     name: James AWS Account
     accountNumber: 11111-111111-1111
     accessKeyId: myaccessKeyid
@@ -30,7 +30,7 @@ If you are using JSON:
   {
     "accounts": [
       {
-        "type": "Amazon",
+        "type": "Amazon AWS",
         "name": "James AWS Account",
         "accountNumber": "11111-111111-1111",
         "accessKeyId": "myaccessKeyid",
@@ -72,7 +72,7 @@ Lets now use this account to build a machine image for Amazon EC2. Open up the f
     installation:
       diskSize: 12288
   builders:
-  - type: Amazon
+  - type: Amazon AWS
     account:
       name: James AWS Account
     installation:
@@ -105,7 +105,7 @@ If you are using JSON (file ``nginx-template.json``):
     },
     "builders": [
       {
-        "type": "Amazon",
+        "type": "Amazon AWS",
         "account": {
           "name": "James AWS Account"
         },
