@@ -176,7 +176,7 @@ If you are using YAML:
 	  installation:
 	    diskSize: 10240
 	  region: eu-west-2
-	  s3bucket: centos-template
+	  bucket: centos-template
 
 If you are using JSON:
 
@@ -193,7 +193,7 @@ If you are using JSON:
 	        "diskSize": 10240
 	      },
 	      "region": "eu-west-2",
-	      "s3bucket": "centos-template"
+	      "bucket": "centos-template"
 	    }
 	  ]
 	}
@@ -212,7 +212,7 @@ If you are using YAML:
 	  installation:
 	    diskSize: 10240
 	  region: eu-west-2
-	  s3bucket: centos-template
+	  bucket: centos-template
 
 If you are using JSON:
 
@@ -229,7 +229,7 @@ If you are using JSON:
 	        "diskSize": 10240
 	      },
 	      "region": "eu-west-2",
-	      "s3bucket": "centos-template"
+	      "bucket": "centos-template"
 	    }
 	  ]
 	}
