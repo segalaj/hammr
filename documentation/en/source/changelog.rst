@@ -9,7 +9,7 @@ hammr 3.8.1 (2018-01-22)
 Evolutions:
 
 * Compatibility with UForge AppCenter 3.8.fp1-1 only
-* Hammr is now compatible with Python 2.7 only
+* Compatibility with Python 2.7 only
 * Add Oracle Cloud publish support
 * Add info for using supervisor mode in Hammr
 
