@@ -15,7 +15,7 @@ For security reasons, it is recommended not to add any cloud account information
 
   ---
   accounts:
-  - type: Amazon AWS
+  - type: Amazon
     name: James AWS Account
     accountNumber: 11111-111111-1111
     accessKeyId: myaccessKeyid
@@ -30,7 +30,7 @@ If you are using JSON:
   {
     "accounts": [
       {
-        "type": "Amazon AWS",
+        "type": "Amazon",
         "name": "James AWS Account",
         "accountNumber": "11111-111111-1111",
         "accessKeyId": "myaccessKeyid",
