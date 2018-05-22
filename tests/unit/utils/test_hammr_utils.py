@@ -3,16 +3,21 @@ __author__ = 'UshareSoft'
 import unittest
 import json
 import yaml
-from mock import patch
+import paramiko
 
+from mock import patch
+from tests.unit.utils.file_utils import findRelativePathFor
+
+from hammr.utils import constants
 from hammr.utils import hammr_utils
+from uforge.application import Api
 
 
 class TestFiles(unittest.TestCase):
     def test_pythonObjectFromYamlParsingShouldBeTheSameAsJsonParsing(self):
         # Given
-        json_path = "tests/integration/data/test-parsing.json"
-        yaml_path = "tests/integration/data/test-parsing.yml"
+        json_path = findRelativePathFor("tests/integration/data/test-parsing.json")
+        yaml_path = findRelativePathFor("tests/integration/data/test-parsing.yml")
         # When
         json_data = json.load(open(json_path))
         yaml_data = yaml.load(open(yaml_path))
@@ -85,6 +90,148 @@ class TestFiles(unittest.TestCase):
         # When
         # Then
         self.assertRaises(Exception, hammr_utils.check_extension_is_json, unsupported_extension_path)
+
+    def test_extract_appliance_id_return_correct_id_for_correct_uri(self):
+        # Given
+        tested_uri = "users/14/appliances/12/whatever/8/testing"
+
+        # When
+        appliance_id = hammr_utils.extract_appliance_id(tested_uri)
+
+        # Then
+        self.assertEqual(12, appliance_id)
+
+    def test_extract_appliance_id_return_none_for_non_appliance_uri(self):
+        # Given
+        tested_uri = "users/myuser/scannedinstances/18/scans/15/testing"
+
+        # When
+        appliance_id = hammr_utils.extract_appliance_id(tested_uri)
+
+        # Then
+        self.assertIsNone(appliance_id)
+
+    def test_extract_scan_id_return_correct_id_for_correct_uri(self):
+        # Given
+        tested_uri = "users/14/scannedinstances/12/scans/108/whatever/18/testing"
+
+        # When
+        scan_id = hammr_utils.extract_scan_id(tested_uri)
+
+        # Then
+        self.assertEqual(108, scan_id)
+
+    def test_extract_scan_id_return_none_for_non_scan_uri(self):
+        # Given
+        tested_uri = "users/14/appliances/12/whatever/8/testing"
+
+        # When
+        scan_id = hammr_utils.extract_scan_id(tested_uri)
+
+        # Then
+        self.assertIsNone(scan_id)
+
+    def test_extract_scannedinstance_id_return_correct_id_for_correct_uri(self):
+        # Given
+        tested_uri = "users/14/scannedinstances/120/scans/108/whatever/18/testing"
+
+        # When
+        scannedinstance_id = hammr_utils.extract_scannedinstance_id(tested_uri)
+
+        # Then
+        self.assertEqual(120, scannedinstance_id)
+
+    def test_extract_scannedinstance_id_return_non_for_nonscan_uri(self):
+        # Given
+        tested_uri = "users/14/appliances/12/whatever/8/testing"
+
+        # When
+        scannedinstance_id = hammr_utils.extract_scannedinstance_id(tested_uri)
+
+        # Then
+        self.assertIsNone(scannedinstance_id)
+
+    def test_is_uri_based_on_scan_return_true_for_scan_uri(self):
+        # Given
+        tested_uri = "users/myuser/scannedinstances/120/scans/108/images/12"
+
+        # When
+        is_scan_uri = hammr_utils.is_uri_based_on_scan(tested_uri)
+
+        # Then
+        self.assertTrue(is_scan_uri)
+
+    def test_is_uri_based_on_scan_return_false_for_appliance_uri(self):
+        # Given
+        tested_uri = "users/14/appliances/102/images/8"
+
+        # When
+        is_scan_uri = hammr_utils.is_uri_based_on_scan(tested_uri)
+
+        # Then
+        self.assertFalse(is_scan_uri)
+
+    def test_is_uri_based_on_appliance_return_true_for_app_uri(self):
+        # Given
+        tested_uri = "users/14/appliances/102/images/8"
+
+        # When
+        is_appliance_uri = hammr_utils.is_uri_based_on_appliance(tested_uri)
+
+        # Then
+        self.assertTrue(is_appliance_uri)
+
+    def test_is_uri_based_on_appliance_return_false_for_scan_uri(self):
+        # Given
+        tested_uri = "users/myuser/scannedinstances/120/scans/108/images/12"
+
+        # When
+        is_appliance_uri = hammr_utils.is_uri_based_on_appliance(tested_uri)
+
+        # Then
+        self.assertFalse(is_appliance_uri)
+
+    @patch("ussclicore.utils.download_utils.Download")
+    @patch("ussclicore.utils.generics_utils.get_uforge_url_from_ws_url")
+    @patch("os.mkdir")
+    def test_download_binary_in_local_temp_dir_download_with_good_url_and_directory(self, mock_mkdir, mock_get_uforge_url, mock_download):
+        # Given
+        api = Api("url", username="username", password="password", headers=None,
+                  disable_ssl_certificate_validation=False, timeout=constants.HTTP_TIMEOUT)
+        mock_get_uforge_url.return_value = "/url"
+        # When
+        local_binary_path = hammr_utils.download_binary_in_local_temp_dir(api, "/tmp/local/temp/dir", "/uri/binary", "binaryName")
+
+        # Then
+        mock_download.assert_called_with("/url/uri/binary", "/tmp/local/temp/dir/binaryName", not api.getDisableSslCertificateValidation())
+        self.assertEqual(local_binary_path, "/tmp/local/temp/dir/binaryName")
+
+    @patch("paramiko.SFTPClient.from_transport")
+    @patch("paramiko.SFTPClient")
+    @patch("paramiko.Transport")
+    @patch("paramiko.SSHClient.connect")
+    def test_upload_binary_to_client_use_put_from_paramiko_SFTPClient(self, mock_connect, mock_transport, mock_sftp_client, mock_paramiko_from_transport):
+        # Given
+        mock_paramiko_from_transport.return_value = mock_sftp_client
+
+        # When
+        hammr_utils.upload_binary_to_client("hostname", 22, "username", "password",  "/tmp/local/temp/dir/binaryName", "/tmp/uri/binary")
+
+        # Then
+        mock_transport.assert_called_with(("hostname", 22))
+        mock_sftp_client.put.assert_called_with("/tmp/local/temp/dir/binaryName", "/tmp/uri/binary")
+        mock_connect.assert_called_with("hostname", 22, "username", "password")
+
+    @patch("paramiko.SSHClient.exec_command")
+    def test_launch_binary_call_exec_command_with_given_command(self, mock_exec_command):
+        # Given
+        mock_exec_command.return_value = "stdin", "stdout", "stderr"
+
+        # When
+        hammr_utils.launch_binary(paramiko.SSHClient(), "command to launch")
+
+        # Then
+        mock_exec_command.assert_called_with("command to launch")
 
 if __name__ == '__main__':
     unittest.main()

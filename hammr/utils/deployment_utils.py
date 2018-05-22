@@ -1,4 +1,4 @@
-# Copyright 2007-2015 UShareSoft SAS, All rights reserved
+# Copyright (c) 2007-2018 UShareSoft, All rights reserved
 #
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -103,7 +103,7 @@ def build_deployment_aws(attributes):
 
 def build_deployment_azure(attributes):
     deployment = Deployment()
-    my_instance = InstanceAzureResourceManager()
+    my_instance = InstanceAzure()
 
     deployment.name = attributes["name"]
     my_instance.userName = attributes["userName"]

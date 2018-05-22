@@ -1,4 +1,4 @@
-.. Copyright (c) 2007-2016 UShareSoft, All rights reserved
+.. Copyright (c) 2007-2018 UShareSoft, All rights reserved
 
 .. _launch-hammr:
 
@@ -10,7 +10,9 @@ Hammr is a command-line tool, allowing you to specify commands that get executed
 .. code-block:: shell
 
 	$ hammr -h
-	usage: hammr [-h] [-a URL] [-u USER] [-p PASSWORD] [-v] [cmds [cmds ...]]
+	usage: hammr [-a URL] [-u USER] [-p PASSWORD] [-k PUBLICKEY] [-s SECRETKEY]
+	             [-c CREDENTIALS] [-v] [-h]
+	             [cmds [cmds ...]]
 	To get more information on a sub-command, use the -h, --help flags or TAB for more information
 
 	$ hammr template -h
@@ -41,7 +43,7 @@ When using the classic mode, the command ``hammr`` is used, followed by a comman
 
 .. code-block:: shell
 
-	$ hammr os list --url https://uforge.usharesoft.com/api -u username -p password
+	$ hammr os list --url https://your-uforge.com/api -u username -p password
 
 To enter interactive mode, launch the ``hammr`` command on its own. This provides a prompt, allowing you to enter commands and sub-commands the same way as you would in classic mode.
 
@@ -56,7 +58,7 @@ Launch hammr providing the batch file:
 
 .. code-block:: shell
 
-	$ hammr batch --file batchfile --url https://uforge.usharesoft.com/api -u username -p password
+	$ hammr batch --file batchfile --url https://your-uforge.com/api -u username -p password
 	os list 
 	Getting distributions for [root] ...
 	+-----+--------+---------+--------------+---------------------+-----------------+
@@ -96,7 +98,7 @@ For example
 
 .. code-block:: shell
 
-	$ hammr os list --url https://uforge.usharesoft.com/api -u username -p password
+	$ hammr os list --url https://your-uforge.com/api -u username -p password
 
 These parameters need to be passed each time you wish to use the command-line.
 
@@ -118,7 +120,7 @@ To use a credential file, go to the ``.hammr`` sub-directory and create the file
 	$ cd ~/.hammr
 	$ vi credentials.yml
 
-Add the authentication and UForge URL endpoint to this file, using the following format:
+For authentication using password, add the authentication and UForge URL endpoint to this file using the following format:
 
 .. code-block:: yaml
 
@@ -139,6 +141,27 @@ If you are using JSON:
 	  "acceptAutoSigned": false
 	}
 
+For authentication using API keys, add the authentication and UForge URL endpoint to this file using the following format:
+
+.. code-block:: yaml
+
+	---
+	user: root
+	publickey: P7LFcJKFm9mrchZQfPo2DX7ECeVO-Tlen0nU7qf2YR0HOuwO9ZjQJJbQV7Nr7pyfrq-iUrlNinwiBpAth7
+	secretkey: wbG7rl402wgTrSd_Enga9HpnxE-PQxtxeMnruyoUIqduaQ9UFmYxfI1l0gf05cgoWfZAd6V_aOyQAlUnYQ
+	url: http://10.1.2.24/api
+	acceptAutoSigned: false
+
+If you are using JSON:
+
+.. code-block:: json
+
+	{
+	  "user" : "root",
+	  "publickey" : "P7LFcJKFm9mrchZQfPo2DX7ECeVO-Tlen0nU7qf2YR0HOuwO9ZjQJJbQV7Nr7pyfrq-iUrlNinwiBpAth7",
+	  "secretkey" : "wbG7rl402wgTrSd_Enga9HpnxE-PQxtxeMnruyoUIqduaQ9UFmYxfI1l0gf05cgoWfZAd6V_aOyQAlUnYQ",
+	  "url" : "http://10.1.2.24/api"
+	}
 
 As this file contains security information, it is recommended to change the permissions on this file, so only you can read or write to it:
 

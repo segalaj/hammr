@@ -1,4 +1,4 @@
-.. Copyright (c) 2007-2016 UShareSoft, All rights reserved
+.. Copyright (c) 2007-2018 UShareSoft, All rights reserved
 
 Welcome to Hammr Command Line Guide
 ===================================
@@ -21,8 +21,7 @@ Contents:
    pages/machine-images/overview
    pages/deployments/overview
    pages/importing/overview
-   pages/templates-spec/overview
-   pages/migration/migrate-system.rst
+   pages/migration/overview
       
    changelog
    
