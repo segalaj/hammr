@@ -46,7 +46,7 @@ Building a Machine Image
 For building an image, the valid keys are:
 
 * ``type`` (mandatory): a string providing the machine image type to build. Default builder type for Docker: ``Docker``. To get the available builder type, please refer to :ref:`command-line-format`.
-* ``entrypoint`` (mandatory): a string describing the command to launch at Docker container start.
+* ``entrypoint`` (mandatory): a string describing the command to launch at Docker container start in ``exec`` form.
 
 Publishing a Machine Image
 --------------------------
@@ -90,7 +90,7 @@ If you are using YAML:
   ---
   builders:
   - type: Docker
-    entrypoint: /usr/sbin/httpd -DFOREGROUND
+    entrypoint: ["/usr/sbin/httpd", "-DFOREGROUND"]
     account:
       type: Docker
       name: Docker Hub
@@ -109,7 +109,7 @@ If you are using JSON:
     "builders": [
       {
         "type": "Docker",
-        "entrypoint": "/usr/sbin/httpd -DFOREGROUND"
+        "entrypoint": "[\"/usr/sbin/httpd\", \"-DFOREGROUND\"]"
         "account": {
           "type": "Docker",
           "name": "Docker Hub",
@@ -169,7 +169,7 @@ If you are using YAML:
   ---
   builders:
   - type: Docker
-    entrypoint: /usr/sbin/httpd -DFOREGROUND
+    entrypoint: ["/usr/sbin/httpd", "-DFOREGROUND"]
     account:
       file: "/path/to/docker-account.yml"
     namespace: mylogin
@@ -184,7 +184,7 @@ If you are using JSON:
     "builders": [
       {
         "type": "Docker",
-        "entrypoint": "/usr/sbin/httpd -DFOREGROUND"
+        "entrypoint": "[\"/usr/sbin/httpd\", \"-DFOREGROUND\"]"
         "account": {
               "file": "/path/to/docker-account.json"
         },
