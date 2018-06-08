@@ -109,7 +109,7 @@ If you are using JSON:
     "builders": [
       {
         "type": "Docker",
-        "entrypoint": "[\"/usr/sbin/httpd\", \"-DFOREGROUND\"]"
+        "entrypoint": "[\"/usr/sbin/httpd\", \"-DFOREGROUND\"]",
         "account": {
           "type": "Docker",
           "name": "Docker Hub",
@@ -184,7 +184,7 @@ If you are using JSON:
     "builders": [
       {
         "type": "Docker",
-        "entrypoint": "[\"/usr/sbin/httpd\", \"-DFOREGROUND\"]"
+        "entrypoint": "[\"/usr/sbin/httpd\", \"-DFOREGROUND\"]",
         "account": {
               "file": "/path/to/docker-account.json"
         },
@@ -204,7 +204,7 @@ If you are using YAML:
   ---
   builders:
   - type: Docker
-    entrypoint: /usr/sbin/httpd -DFOREGROUND
+    entrypoint: ["/usr/sbin/httpd", "-DFOREGROUND"]
     account:
       name: Docker Hub
     namespace: mylogin
@@ -219,7 +219,7 @@ If you are using JSON:
     "builders": [
       {
         "type": "Docker",
-        "entrypoint": "/usr/sbin/httpd -DFOREGROUND"
+        "entrypoint": "[\"/usr/sbin/httpd\", \"-DFOREGROUND\"]",
         "account": {
           "name": "Docker Hub"
           },
