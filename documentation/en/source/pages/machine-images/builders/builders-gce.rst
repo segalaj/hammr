@@ -101,6 +101,7 @@ Used to authenticate to GCE.
 The GCE cloud account has the following valid keys:
 
 * ``type`` (mandatory): a string providing the cloud account type. Default platform type for Google Compute Engine: ``Google Compute Engine``. To get the available platform type, please refer to :ref:`command-line-platform`
+* ``name`` (mandatory): a string providing the name of the cloud account. This name can be used in a builder section to reference the rest of the cloud account information.
 * ``cert`` (mandatory): A string providing the pathname or URL where to retrieve your GCE certificate. This should be a (.json) file.
 
 
