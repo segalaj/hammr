@@ -18,6 +18,4 @@ import unittest
 
 class TestFail(unittest.TestCase):
     def test_should_fail(self):
-        foo = "bad variable name"
-
-        self.assertTrue(True)
+        self.fail("it fails")
