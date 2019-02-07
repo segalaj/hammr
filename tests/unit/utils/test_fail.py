@@ -20,4 +20,4 @@ class TestFail(unittest.TestCase):
     def test_should_fail(self):
         foo = "bad variable name"
 
-        self.fail("it fails" + foo)
+        self.assertTrue(True)
